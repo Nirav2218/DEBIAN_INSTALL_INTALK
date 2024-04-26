@@ -57,7 +57,7 @@ mysql -h$env_FS_DB_HOST -u root -pagami210 -e "FLUSH PRIVILEGES"
 cat <<EOF >/etc/odbc.ini
 [freeswitch]
 Driver   = MySQL
-SERVER   = ${env_FS_DB_HOST}
+SERVER   = 127.0.0.1
 PORT    = 3306
 DATABASE = freeswitch
 OPTION  = 67108864
@@ -71,7 +71,7 @@ SERVER   = ${env_OPENCC_DB_HOST}
 PORT    = 3306
 DATABASE = opencc
 OPTION  = 67108864
-Socket   = /var/lib/mysql/mysql.sock
+#Socket   = /var/lib/mysql/mysql.sock
 threading=0
 EOF
 
@@ -96,12 +96,13 @@ apt-get build-dep freeswitch -y
 
 # then let's get the source. Use the -b flag to get a specific branch
 cd /usr/src/
-git clone https://github.com/signalwire/freeswitch.git -bv1.10 freeswitch
-cd freeswitch
-
-# ... and do the build
+git clone -b dev_24 https://nirav:glpat-wKff3BrgiPfekpmhNsST@gitlab.helpinbox.io/freeswitchprojects/Freeswitch_v1.10
+cd Freeswitch_v1.10
 ./bootstrap.sh -j
-./configure
+./configure --enable-portable-binary \
+            --with-gnu-ld --with-python --with-erlang --with-openssl \
+            --enable-core-odbc-support --enable-zrtp \
+            --enable-static-v8 --disable-parallel-build-v8
 make
 make install
 
@@ -110,13 +111,9 @@ cd $env_USER_HOME_DIR
 groupadd -f daemon
 useradd -M -s /usr/sbin/nologin -g daemon freeswitch
 
-wget $env_MEDIA_SOURCE
-tar -xvf "$(basename "$env_MEDIA_SOURCE")"
-cd Install_MediaServer
-tar -xvzf freeswitch*.tgz
-cd usr/local/src/freeswitch_*
+cd /usr/src/Freeswitch_v1.10
 scp -r conf scripts /usr/local/freeswitch/
-cd $env_USER_HOME_DIR
+cd -
 
 ln -s /usr/local/freeswitch/bin/freeswitch /usr/bin/freeswitch
 ln -s /usr/local/freeswitch/bin/fs_cli /usr/bin/fs_cli
@@ -128,16 +125,11 @@ chmod g+w /usr/local/freeswitch -R
 
 systemctl start freeswitch.service
 
-cd $env_USER_HOME_DIR/lua-5.3.5
-make linux test
-make install
-cd $env_USER_HOME_DIR
-
 # Create symbolic links and enable FreeSwitch service
-ln -sf /usr/src/freeswitch/build/freeswitch.service /etc/systemd/system/freeswitch.service
-systemctl daemon-reload
-systemctl enable freeswitch.service
-systemctl restart freeswitch.service
+# ln -sf /usr/src/freeswitch/build/freeswitch.service /etc/systemd/system/freeswitch.service
+# systemctl daemon-reload
+# systemctl enable freeswitch.service
+# systemctl restart freeswitch.service
 
 # Check FreeSWITCH service status
 if systemctl is-active --quiet freeswitch; then
@@ -160,6 +152,7 @@ sed -i '6i\</list>' /usr/local/freeswitch/conf/autoload_configs/acl.conf.xml
 sed -i 's/<param name="listen-ip" value="::"\/>/<param name="listen-ip" value="0.0.0.0"\/>/g' /usr/local/freeswitch/conf/autoload_configs/event_socket.conf.xml
 sed -i 's/^\s*<!--<param name="apply-inbound-acl" value="loopback.auto"\/>-->/    <param name="apply-inbound-acl" value="lan"\/>/g' /usr/local/freeswitch/conf/autoload_configs/event_socket.conf.xml
 
+cd $env_USER_HOME_DIR
 cp freeswitch.service /etc/systemd/system/
 
 systemctl daemon-reload
