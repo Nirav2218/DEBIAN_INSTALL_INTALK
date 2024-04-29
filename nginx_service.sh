@@ -39,7 +39,23 @@ fi
 # Update package index
 log_message "Updating package index..."
 apt install -y curl gnupg2 ca-certificates lsb-release debian-archive-keyring
-
+apt-get install -y  dos2unix net-tools vim memcached libmemcached-tools
+systemctl restart memcached
+systemctl enable memcached
+apt-get install -y php-mysql
+apt-get install -y php-xml
+apt-get install -y php-mcrypt
+apt-get install -y php-soap
+apt-get install -y php-memcache
+apt-get install -y php-devel
+apt-get install -y php-gd
+apt-get install -y php-imap
+apt-get install -y php-ldap
+apt-get install -y wkhtmltopdf
+apt-get install -y Xvfb
+apt-get install -y php-redis
+apt-get install -y php-curl
+apt-get install -y php-bcmath
 # Download the Nginx signing key and add it to the keyring
 curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
 
