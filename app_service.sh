@@ -53,6 +53,7 @@ apt-get install -y wkhtmltopdf
 apt-get install -y Xvfb
 apt-get install -y php-redis
 apt-get install -y php-curl
+apt-get install -y php-bcmath
 a2enmod $env_PHP_VERSION rewrite ssl
 systemctl enable apache2
 systemctl restart apache2
