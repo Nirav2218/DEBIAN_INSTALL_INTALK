@@ -9,7 +9,7 @@ log_message() {
 }
 # Load environment variables from config.ini
 export $(grep '^env_' configuration.ini | sed 's/\[Variables\]//;s/^env_/env_/;s/ = /=/')
-
+key=$env_KEY
 intalk_src=$(find . -type f -name "intalk.io_v*.tgz")
 
 ip_addr=$(ip route get 8.8.8.8 | awk '/src/ {print $7}')
