@@ -93,7 +93,12 @@ mysql -u root -pagami210 -e "FLUSH PRIVILEGES"
 mysql -u root -pagami210 -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'agami210' WITH GRANT OPTION;"
 # mysql -u root -pagami210 -e "GRANT CREATE ROUTINE ON *.* TO 'root'@'%' IDENTIFIED BY 'agami210';"
 # mysql -u root -pagami210 -e "GRANT SUPER ON *.* TO 'root'@'%';"
-
+echo "
+CREATE USER 'opencc'@'%' IDENTIFIED BY 'opencc';
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'agami210';
+GRANT ALL PRIVILEGES ON *.* TO 'opencc'@'%';
+FLUSH PRIVILEGES;
+" | mysql -u root -pagami210
 systemctl restart mariadb
 # fi
 
