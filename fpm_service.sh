@@ -25,10 +25,10 @@ systemctl start $env_$env_PHP_VERSION_VERSION-fpm
 systemctl enable $env_$env_PHP_VERSION_VERSION-fpm
 
 if [[ "$env_MULTI_APP" == "n" || "$env_MULTI_APP" == "N" ]]; then
-    cp $env_USER_HOME_DIR/www.conf /etc/php/$env_PHP_VERSION/fpm/pool.d/
+    cp $env_USER_HOME_DIR/www.conf /etc/php/7.4/fpm/pool.d/
 else
-    cp $env_USER_HOME_DIR/www2.conf /etc/php/$env_PHP_VERSION/fpm/pool.d/
-    mv /etc/php/$env_PHP_VERSION/fpm/pool.d/www2.conf www.conf
+    cp $env_USER_HOME_DIR/www2.conf /etc/php/7.4/fpm/pool.d/
+    mv /etc/php/7.4/fpm/pool.d/www2.conf www.conf
 fi
 
 mkdir -p /var/www/html
