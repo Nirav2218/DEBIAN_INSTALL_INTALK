@@ -98,6 +98,7 @@ apt-get build-dep freeswitch -y
 cd /usr/src/
 git clone -b dev_24 https://nirav:glpat-wKff3BrgiPfekpmhNsST@gitlab.helpinbox.io/freeswitchprojects/Freeswitch_v1.10
 cd Freeswitch_v1.10
+make clean
 ./bootstrap.sh -j
 ./configure --enable-portable-binary \
             --with-gnu-ld --with-python --with-erlang --with-openssl \
