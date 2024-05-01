@@ -56,6 +56,6 @@ chown freeswitch:daemon /var/www/html/openpbx
 chown freeswitch:daemon -R /var/www/html/openpbx
 chown freeswitch:daemon -R "$OPENCC_FOLDER"
 
-systemctl restart $env_$env_PHP_VERSION_VERSION-fpm
+systemctl restart $env_PHP_VERSION_VERSION-fpm
 
 log_message "PHP-FPM installed, configured successfully."
