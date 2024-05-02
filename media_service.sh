@@ -150,8 +150,8 @@ sed -i '4i\  <!-- Add a node to allow IP address 192.168.1.41 -->' /usr/local/fr
 sed -i "5i\\  <node type=\"allow\" cidr=\"$app_ip_addr\/32\"\/>" /usr/local/freeswitch/conf/autoload_configs/acl.conf.xml
 sed -i '6i\</list>' /usr/local/freeswitch/conf/autoload_configs/acl.conf.xml
 
-sed -i 's/<param name="listen-ip" value="::"\/>/<param name="listen-ip" value="0.0.0.0"\/>/g' /usr/local/freeswitch/conf/autoload_configs/event_socket.conf.xml
-sed -i 's/^\s*<!--<param name="apply-inbound-acl" value="loopback.auto"\/>-->/    <param name="apply-inbound-acl" value="lan"\/>/g' /usr/local/freeswitch/conf/autoload_configs/event_socket.conf.xml
+sed -i 's/<param name="listen-ip" value="127.0.0.1"\/>/<param name="listen-ip" value="0.0.0.0"\/>/g' /usr/local/freeswitch/conf/autoload_configs/event_socket.conf.xml
+sed -i 's/^\s*<!--<param name="apply-inbound-acl" value="loopback.auto"\/>-->/<param name="apply-inbound-acl" value="lan"\/>/g' /usr/local/freeswitch/conf/autoload_configs/event_socket.conf.xml
 
 cd $env_USER_HOME_DIR
 cp freeswitch.service /etc/systemd/system/
